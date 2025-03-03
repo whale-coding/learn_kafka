@@ -36,4 +36,14 @@ class KafkaBaseApplicationTests {
 		eventProducer.sendEvent5();
 	}
 
+	@Test
+	void test06() {
+		eventProducer.sendEvent6();
+	}
+
+	@Test
+	void test07() {
+		eventProducer.sendEvent7();
+	}
+
 }

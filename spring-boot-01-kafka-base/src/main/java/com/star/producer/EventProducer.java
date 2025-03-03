@@ -6,11 +6,13 @@ import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @Classname: EventProducer
@@ -65,5 +67,50 @@ public class EventProducer {
         // Integer partition, Long timestamp, K key, V data
         // 没有指定topic，需要在配置文件中配置default-topic 否则报错
         kafkaTemplate.sendDefault(0, System.currentTimeMillis(), "k3", "hello kafka");
+    }
+
+    public void sendEvent6() {
+        // Integer partition, Long timestamp, K key, V data
+        CompletableFuture<SendResult<String, String>> completableFuture
+                = kafkaTemplate.sendDefault(0, System.currentTimeMillis(), "k3", "hello kafka");
+
+        // 怎么拿到结果，通过CompletableFuture这个类拿结果，这个类里面有很多方法
+        try {
+            //1、阻塞等待的方式拿结果
+            SendResult<String, String> sendResult = completableFuture.get();
+            if (sendResult.getRecordMetadata() != null) {  // 源数据，只要有ack就不会为空
+                // kafka服务器确认已经接收到了消息
+                System.out.println("消息发送成功: " + sendResult.getRecordMetadata().toString());
+            }
+            System.out.println("producerRecord: " + sendResult.getProducerRecord());  // 消息本身的对象
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendEvent7() {
+        // Integer partition, Long timestamp, K key, V data
+        CompletableFuture<SendResult<String, String>> completableFuture
+                = kafkaTemplate.sendDefault(0, System.currentTimeMillis(), "k3", "hello kafka");
+
+        // 怎么拿到结果，通过CompletableFuture这个类拿结果，这个类里面有很多方法
+        try {
+            // 2、非阻塞的方式拿结果
+            completableFuture.thenAccept((sendResult) -> {
+                if (sendResult.getRecordMetadata() != null) {
+                    // kafka服务器确认已经接收到了消息
+                    System.out.println("消息发送成功: " + sendResult.getRecordMetadata().toString());
+                }
+                System.out.println("producerRecord: " + sendResult.getProducerRecord());
+            }).exceptionally((t) -> {
+                t.printStackTrace();
+                // 做失败的处理
+                return null;  // 根据需求返回内容
+            });
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

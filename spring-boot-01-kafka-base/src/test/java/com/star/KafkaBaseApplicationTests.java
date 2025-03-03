@@ -51,4 +51,9 @@ class KafkaBaseApplicationTests {
 		eventProducer.sendEvent8();
 	}
 
+	@Test
+	void test09() {
+		eventProducer.sendEvent9();
+	}
+
 }

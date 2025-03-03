@@ -129,6 +129,13 @@ public class EventProducer {
         kafkaTemplate2.sendDefault(null, System.currentTimeMillis(), "k3", user);
     }
 
+    // 往自定义Topic里面发消息
+    public void sendEvent9() {
+        User user = User.builder().id(1208).phone("13709090909").birthDay(new Date()).build();
+        // 分区是null，让kafka自己去决定把消息发到哪个分区
+        kafkaTemplate2.send("heTopic", null, System.currentTimeMillis(), "k9", user);
+    }
+
 
 
 }

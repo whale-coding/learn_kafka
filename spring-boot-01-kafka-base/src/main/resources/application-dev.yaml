@@ -1,0 +1,14 @@
+server:
+  port: 8086
+spring:
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092  # kafka连接配置,ip+port(默认为9092)
+
+    # 配置生产者（24个）
+    #    producer:
+
+    # 配置消费者（27个）
+    consumer:
+      auto-offset-reset: earliest  # 从最早的偏移量开始读消息
+    template:
+      default-topic: default-topic  # 配置模版默认的topic

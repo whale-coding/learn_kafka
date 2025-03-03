@@ -4,8 +4,12 @@ spring:
   kafka:
     bootstrap-servers: 127.0.0.1:9092  # kafka连接配置,ip+port(默认为9092)
 
-    # 配置生产者（24个）
-    #    producer:
+    # 配置生产者（24个） org.springframework.kafka.support.serializer.JsonSerializer
+    producer:
+      # 配置value的序列化器，默认是StringSerializer,如果是发送对象，我们可以使用JsonSerializer或者ToStringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      # key默认序列化方式也是StringSerializer，一般不需要更改
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
 
     # 配置消费者（27个）
     consumer:

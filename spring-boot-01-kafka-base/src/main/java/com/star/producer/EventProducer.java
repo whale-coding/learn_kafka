@@ -1,5 +1,6 @@
 package com.star.producer;
 
+import com.star.domain.User;
 import jakarta.annotation.Resource;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Headers;
@@ -12,6 +13,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -26,6 +28,12 @@ public class EventProducer {
     //加入了spring-kafka依赖 + .yml配置信息，springboot自动配置好了kafka，自动装配好了KafkaTemplate这个Bean
     @Resource
     private KafkaTemplate<String, String> kafkaTemplate;
+
+    @Resource
+    private KafkaTemplate<String, Object> kafkaTemplate2;
+
+    @Resource
+    private KafkaTemplate<Object, Object> kafkaTemplate3;
 
 
     public void sendEvent() {
@@ -113,4 +121,14 @@ public class EventProducer {
             throw new RuntimeException(e);
         }
     }
+
+    // 发送对象消息
+    public void sendEvent8() {
+        User user = User.builder().id(1208).phone("13709090909").birthDay(new Date()).build();
+        // 分区是null，让kafka自己去决定把消息发到哪个分区
+        kafkaTemplate2.sendDefault(null, System.currentTimeMillis(), "k3", user);
+    }
+
+
+
 }

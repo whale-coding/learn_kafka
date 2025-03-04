@@ -33,7 +33,7 @@ public class EventProducer {
     private KafkaTemplate<String, Object> kafkaTemplate2;
 
     @Resource
-    private KafkaTemplate<Object, Object> kafkaTemplate3;
+    private KafkaTemplate<String, Object> kafkaTemplate3;
 
 
     public void sendEvent() {
@@ -134,6 +134,12 @@ public class EventProducer {
         User user = User.builder().id(1208).phone("13709090909").birthDay(new Date()).build();
         // 分区是null，让kafka自己去决定把消息发到哪个分区
         kafkaTemplate2.send("heTopic", null, System.currentTimeMillis(), "k9", user);
+    }
+
+    public void sendEvent10() {
+        User user = User.builder().id(1208).phone("13709090909").birthDay(new Date()).build();
+        // 分区是null，让kafka自己去决定把消息发到哪个分区
+        kafkaTemplate2.send("heTopic", user);
     }
 
 

@@ -16,3 +16,4 @@ spring:
       auto-offset-reset: earliest  # 从最早的偏移量开始读消息
     template:
       default-topic: default-topic  # 配置模版默认的topic
+

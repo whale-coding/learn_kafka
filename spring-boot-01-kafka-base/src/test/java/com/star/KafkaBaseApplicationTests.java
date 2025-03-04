@@ -58,7 +58,10 @@ class KafkaBaseApplicationTests {
 
 	@Test
 	void test10() {
-		eventProducer.sendEvent10();
+		for (int i = 0; i < 5; i++) {
+			eventProducer.sendEvent10();
+		}
+
 	}
 
 }

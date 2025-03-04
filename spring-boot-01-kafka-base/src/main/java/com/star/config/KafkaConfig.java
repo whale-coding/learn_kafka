@@ -37,7 +37,8 @@ public class KafkaConfig {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);  // kafka服务器地址
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, keySerializer);  // key的序列化方式
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, valueSerializer);  // value的序列化方式
-        props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, RoundRobinPartitioner.class);  // 指定分区策略为轮询的方式
+        // props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, RoundRobinPartitioner.class);  // 指定分区策略为轮询的方式
+        props.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, CustomerPartitioner.class);
 
         return props;
     }

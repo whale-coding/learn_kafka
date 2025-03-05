@@ -1,0 +1,10 @@
+server:
+  port: 8092
+spring:
+  kafka:
+    bootstrap-servers: 192.168.11.128:9091,192.168.11.128:9092,192.168.11.128:9093  # 配置kafka集群
+
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest

@@ -1,0 +1,13 @@
+server:
+  port: 8087
+spring:
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092  # kafka连接配置,ip+port(默认为9092)
+
+    # 配置消费监听器
+    listener:
+      type: batch  # 设置批量消费，默认是单个消息消费
+
+    consumer:
+      max-poll-records: 20  # 批量消费每次最多消费多少条消息
+      auto-offset-reset: earliest  # 从最早的开始消费

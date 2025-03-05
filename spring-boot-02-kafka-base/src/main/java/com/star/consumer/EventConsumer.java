@@ -4,6 +4,8 @@ import com.star.domain.User;
 import com.star.util.JSONUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.PartitionOffset;
+import org.springframework.kafka.annotation.TopicPartition;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -60,7 +62,7 @@ public class EventConsumer {
     }
 
     // Acknowledgment ack参数，开启手动消息确认模式
-    @KafkaListener(topics = { "${kafka.topic.name}"}, groupId = "${kafka.consumer.group}")
+    // @KafkaListener(topics = { "${kafka.topic.name}"}, groupId = "${kafka.consumer.group}")
     public void onEvent4(String userJSON,
                          @Header(value = KafkaHeaders.RECEIVED_TOPIC) String topic,
                          @Header(value = KafkaHeaders.RECEIVED_PARTITION) String partition,
@@ -77,6 +79,34 @@ public class EventConsumer {
 
             // 业务处理完成，给kafka服务器确认（手动确认，默认是kafka自动确认）
             ack.acknowledge(); // 手动确认消息，就是告诉kafka服务器，该消息我已经收到了，默认情况下kafka是自动确认
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // 指定topic、partition、offset消费
+    @KafkaListener(groupId = "${kafka.consumer.group}",
+        topicPartitions = {
+                @TopicPartition(
+                        topic = "${kafka.topic.name}",
+                        partitions = {"0", "1", "2"},
+                        partitionOffsets = {
+                                @PartitionOffset(partition = "3", initialOffset = "3"),
+                                @PartitionOffset(partition = "4", initialOffset = "3")
+                        })
+        })
+    public void onEvent5(String userJSON,
+                         @Header(value = KafkaHeaders.RECEIVED_TOPIC) String topic,
+                         @Header(value = KafkaHeaders.RECEIVED_PARTITION) String partition,
+                         @Payload ConsumerRecord<String, String> record,
+                         Acknowledgment ack) {
+        try {
+            //收到消息后，处理业务
+            User user = JSONUtils.toBean(userJSON, User.class);
+            System.out.println("读取到的事件5：" + user + ", topic : " + topic + ", partition : " + partition);
+            //业务处理完成，给kafka服务器确认
+            ack.acknowledge(); //手动确认消息，就是告诉kafka服务器，该消息我已经收到了，默认情况下kafka是自动确认
         } catch (Exception e) {
             e.printStackTrace();
         }

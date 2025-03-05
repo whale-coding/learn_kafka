@@ -4,6 +4,10 @@ spring:
   kafka:
     bootstrap-servers: 127.0.0.1:9092  # kafka连接配置,ip+port(默认为9092)
 
+    # 配置消费者
+    consumer:
+      auto-offset-reset: earliest
+
     # 配置消息监听器
     listener:
       # 开启消息监听的手动确认模式

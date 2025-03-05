@@ -33,4 +33,13 @@ public class EventProducer {
         kafkaTemplate.send("helloTopic", userJSON);
     }
 
+    public void sendEvent3() {
+        for (int i = 0; i < 25; i++) {
+            User user = User.builder().id(i).phone("13709090909"+i).birthDay(new Date()).build();
+            String userJSON = JSONUtils.toJSON(user);
+
+            kafkaTemplate.send("helloTopic", "k"+i, userJSON);
+        }
+    }
+
 }

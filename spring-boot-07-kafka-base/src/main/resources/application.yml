@@ -1,0 +1,14 @@
+server:
+  port: 8091
+spring:
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+    #配置消息监听器
+    listener:
+      #开启消息监听的手动确认模式
+      ack-mode: manual

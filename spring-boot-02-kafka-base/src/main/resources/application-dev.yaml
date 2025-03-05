@@ -4,17 +4,14 @@ spring:
   kafka:
     bootstrap-servers: 127.0.0.1:9092  # kafka连接配置,ip+port(默认为9092)
 
-    # 配置生产者（24个） org.springframework.kafka.support.serializer.JsonSerializer
-    producer:
-      # 配置value的序列化器，默认是StringSerializer,如果是发送对象，我们可以使用JsonSerializer或者ToStringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      # key默认序列化方式也是StringSerializer，一般不需要更改
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    # 配置消息监听器
+    listener:
+      # 开启消息监听的手动确认模式
+      ack-mode: manual
 
-    # 配置消费者（27个）
-    consumer:
-      auto-offset-reset: earliest  # 从最早的偏移量开始读消息
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer  # 消费者接收消息的反序列化
-    template:
-      default-topic: default-topic  # 配置模版默认的topic
-
+#自定义的配置
+kafka:
+  topic:
+    name: helloTopic
+  consumer:
+    group: helloGroup2
